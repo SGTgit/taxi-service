@@ -1,0 +1,370 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color: #0d1b2a;
+  background: #fffaf3;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --navy: #0d1b2a;
+  --gold: #c9964a;
+  --cream: #f5ebdd;
+  --slate: #6b7280;
+}
+
+/* ── Smooth dark / light mode transition ──────────────────────────
+   Applied only after first render (.theme-ready) so the saved
+   preference doesn't cause a flash on page load.
+   We deliberately omit 'transform' and 'opacity' from the
+   transition-property so Tailwind duration classes on images/cards
+   are NOT overridden — Framer Motion handles those separately.
+────────────────────────────────────────────────────────────────── */
+.theme-ready *,
+.theme-ready *::before,
+.theme-ready *::after {
+  transition-property: background-color, color, border-color,
+    fill, stroke, box-shadow, outline-color;
+  transition-duration: 0.35s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  color: #ffffff;
+  background: #0a1628;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+img {
+  display: block;
+}
+
+/* Card image hover — slow, silky scale.
+   Use class="card-img" on <img> inside group containers. */
+.card-img {
+  transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+.group:hover .card-img {
+  transform: scale(1.04);
+}
+
+
+.font-display {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.section-shell {
+  width: min(1180px, calc(100% - 36px));
+  margin-inline: auto;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #d9a14a 0%, #c88e33 48%, #b57a24 100%);
+}
+
+.navy-gradient {
+  background:
+    radial-gradient(circle at top left, rgba(201, 150, 74, 0.18), transparent 34%),
+    linear-gradient(135deg, #0d1b2a 0%, #071421 100%);
+}
+
+.hero-stage {
+  background:
+    radial-gradient(circle at 12px 12px, rgba(201, 150, 74, 0.1) 1px, transparent 1.5px),
+    linear-gradient(90deg, rgba(245, 235, 221, 0.88) 0%, rgba(255, 250, 243, 0.96) 42%, #ffffff 100%);
+  background-size: 24px 24px, auto;
+}
+
+.dark .hero-stage {
+  background:
+    radial-gradient(circle at 18% 22%, rgba(201, 150, 74, 0.14), transparent 28%),
+    radial-gradient(circle at 74% 30%, rgba(201, 150, 74, 0.12), transparent 36%),
+    linear-gradient(135deg, #0a1628 0%, #03141d 46%, #01080d 100%);
+}
+
+.hero-image-panel {
+  border-bottom-left-radius: 190px;
+  border-top-left-radius: 210px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.hero-image-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-left: 3px solid rgba(201, 150, 74, 0.78);
+  border-top: 3px solid rgba(201, 150, 74, 0.58);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.88);
+  border-bottom-left-radius: 190px;
+  border-top-left-radius: 210px;
+}
+
+.dark .hero-image-panel::before {
+  border-left-color: rgba(201, 150, 74, 0.92);
+  border-top-color: rgba(201, 150, 74, 0.78);
+  border-bottom-color: rgba(201, 150, 74, 0.45);
+}
+
+.hero-gold-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  height: 4px;
+  width: 100%;
+  background: #ffffff;
+}
+
+.dark .hero-gold-line {
+  background: rgba(201, 150, 74, 0.42);
+}
+
+.newsletter-strip {
+  background-image: url("/assets/vechiles/hero-car-temple.webp");
+  background-position: center 46%;
+  background-size: cover;
+}
+
+.dark .newsletter-strip {
+  background-image: url("/assets/vechiles/hero-car-temple-dark.webp");
+}
+
+.soft-shadow {
+  box-shadow: 0 18px 45px rgba(13, 27, 42, 0.14);
+}
+
+.card-shadow {
+  box-shadow: 0 14px 34px rgba(13, 27, 42, 0.12);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Offset for fixed header on anchor navigation */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+@media (min-width: 768px) {
+  section[id] {
+    scroll-margin-top: 96px;
+  }
+}
+
+/* Custom scale utility used in Gallery */
+.group:hover .group-hover\:scale-108 {
+  transform: scale(1.08);
+}
+
+/* ── Premium Enhancements ───────────────────────────────────────── */
+
+/* 1. Global Noise Overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+.dark .noise-overlay {
+  opacity: 0.025;
+}
+
+/* 2. Glassmorphism Card Style (Dark Mode) */
+.premium-card {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.dark .premium-card {
+  background: rgba(10, 24, 41, 0.72) !important;
+  backdrop-filter: blur(12px) saturate(110%);
+  -webkit-backdrop-filter: blur(12px) saturate(110%);
+  border: 1px solid rgba(201, 150, 74, 0.28) !important;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05),
+    inset 0 0 16px rgba(201, 150, 74, 0.03) !important;
+}
+.dark .premium-card:hover {
+  background: rgba(12, 28, 48, 0.8) !important;
+  border-color: rgba(201, 150, 74, 0.48) !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(201, 150, 74, 0.12),
+    inset 0 1px 2px rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 3. Gold Glow & Sheen on Hover CTAs */
+.gold-gradient {
+  background: linear-gradient(135deg, #d9a14a 0%, #c88e33 48%, #b57a24 100%);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.gold-gradient::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transition: all 0.6s ease;
+  z-index: -1;
+}
+.gold-gradient:hover::before {
+  left: 100%;
+}
+.gold-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 24px rgba(201, 150, 74, 0.4),
+    0 0 15px rgba(201, 150, 74, 0.25) !important;
+}
+.dark .gold-gradient:hover {
+  box-shadow: 
+    0 12px 28px rgba(201, 150, 74, 0.5),
+    0 0 25px rgba(201, 150, 74, 0.35) !important;
+}
+
+/* Premium hover effects for outline gold buttons */
+button.border-\[\#c9964a\],
+a.border-\[\#c9964a\] {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+button.border-\[\#c9964a\]:hover,
+a.border-\[\#c9964a\]:hover {
+  background: #c9964a !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201, 150, 74, 0.25) !important;
+}
+.dark button.border-\[\#c9964a\]:hover,
+.dark a.border-\[\#c9964a\]:hover {
+  box-shadow: 0 8px 24px rgba(201, 150, 74, 0.35) !important;
+}
+
+/* 4. Elegant Animated Gold Corners */
+.premium-corners {
+  position: relative;
+}
+.premium-corners::before,
+.premium-corners::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid #c9964a;
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 10;
+}
+/* Top-left corner */
+.premium-corners::before {
+  top: 8px;
+  left: 8px;
+  border-right: 0;
+  border-bottom: 0;
+}
+/* Bottom-right corner */
+.premium-corners::after {
+  bottom: 8px;
+  right: 8px;
+  border-left: 0;
+  border-top: 0;
+}
+.premium-corners:hover::before {
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+}
+.premium-corners:hover::after {
+  bottom: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+}
+
+/* 5. Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #fffaf3;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #060f1e;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 150, 74, 0.35);
+  border-radius: 9999px;
+  border: 3px solid #fffaf3;
+  transition: background 0.3s ease;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(201, 150, 74, 0.4);
+  border: 3px solid #060f1e;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 150, 74, 0.7);
+}
+
+/* 6. Color Contrast Accessibility Overrides (Light/Dark adaptive) */
+:root {
+  --gold-text: #966722; /* High-contrast gold passing WCAG AA on white/cream */
+  --slate-text: #525a66; /* High-contrast slate passing WCAG AA on white/cream */
+}
+.dark {
+  --gold-text: #c9964a; /* Original brand gold for dark mode */
+  --slate-text: #9ca3af; /* Original slate for dark mode */
+}
+
+/* Tailwind utility class overrides for text color contrast */
+.text-\[\#c9964a\] {
+  color: var(--gold-text) !important;
+}
+.text-\[\#6b7280\] {
+  color: var(--slate-text) !important;
+}
+

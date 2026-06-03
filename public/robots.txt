@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.gautamtoursandtravels.com/sitemap.xml
+
+# Crawl-delay can be added for throttling (optional)
+# Crawl-delay: 10
